@@ -7,6 +7,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 import collections
 
+def main():
+    '''
+    randomNetwork = makeRandomNetwork(100, 1000);
+    drawGraph(randomNetwork)
+    drawHistogram(randomNetwork)
+    '''
+
+    network = generateNetwork(100, 200, weighted = True)
+    drawWeightedGraph(network)
+
+
 def makeRandomNetwork(nodes, edges):
 
     if(edges > nodes*(nodes-1)/2):
@@ -29,6 +40,35 @@ def makeRandomNetwork(nodes, edges):
     G.add_edges_from(edgeArray)
 
     return G
+
+
+def generateNetwork(nodeSize, edgeBudget, weighted = False):
+
+    # Create an empty graph
+    G = nx.Graph()
+
+    # Create an iterable container of given number nodes and add to the graph
+    H = nx.path_graph(nodeSize)
+    G.add_nodes_from(H)
+
+    # Create an edge between any random two nodes and keep creating edges
+    #       until we run out of edges to connect
+    for i in range(edgeBudget):
+        n1 = np.random.randint(0, nodeSize)
+        n2 = np.random.randint(0, nodeSize)
+
+        if(weighted):
+            weight = np.random.uniform(0, 1)
+        else:
+            weight = 1
+
+        while(n2 == n1):
+            n2 = np.random.randint(0, nodeSize)
+
+        G.add_edge(n1, n2, weight = weight)
+
+    return G
+
 
 def drawHistogram(G):
     degree_sequence = sorted([d for n, d in G.degree()], reverse=True)  # degree sequence
@@ -55,14 +95,41 @@ def drawHistogram(G):
 
     plt.show()
 
+
 def drawGraph(G):
-    if(G==None):
+    if(G == None):
         return None
+
     plt.figure(1, figsize=(20,10))
     nx.draw_networkx(G, with_labels=True, font_weight='bold')
     plt.show()
 
 
-randomNetwork = makeRandomNetwork(100, 1000);
-drawGraph(randomNetwork)
-drawHistogram(randomNetwork)
+def drawWeightedGraph(G):
+    if(G == None):
+        return None
+
+    # Positions for all nodes
+    # Check the following link for options
+    #       https://networkx.github.io/documentation/networkx-1.10/reference/drawing.html#module-networkx.drawing.layout
+    pos = nx.spring_layout(G)
+
+    # Create a figure
+    plt.figure(1, figsize=(20,10))
+    #plt.margins(50, 50)
+
+    # Iterate through all edges and plot them depending on their weights
+    for (u, v, d) in G.edges(data = True):
+        edge = [(u, v)]
+        nx.draw_networkx_edges(G, pos, edgelist = edge, width = d['weight']*2)
+
+    # Draw nodes and add labes to all nodes
+    nx.draw_networkx_nodes(G, pos)
+    nx.draw_networkx_labels(G, pos, font_weight='bold')
+
+    #plt.axis('off')
+    plt.show()
+
+
+if __name__ == '__main__':
+    main()
