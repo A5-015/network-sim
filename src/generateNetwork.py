@@ -9,30 +9,17 @@ import collections
 
 def main():
 
-<<<<<<< HEAD
-    randomNetwork = makeRandomNetwork(nodes = 500, edges = 800)
+    randomNetwork = makeRandomNetwork(nodes = 500, edges = 1500)
     print(nx.info(randomNetwork))
     drawGraph(randomNetwork)
     drawHistogram(randomNetwork)
 
 
     # network = generateNetwork(nodeSize = 100, edgeBudget = 1000, name = "Test Network")
-    scaleFreeNetwork = makeScaleFreeNetwork(nodes = 500, edges = 5000)
+    scaleFreeNetwork = makeScaleFreeNetwork(nodes = 500, edges = 1500)
     print(nx.info(scaleFreeNetwork))
     drawGraph(scaleFreeNetwork)
     drawHistogram(scaleFreeNetwork)
-=======
-    #randomNetwork = makeRandomNetwork(100, 1000);
-    #print(nx.info(randomNetwork))
-    #drawGraph(randomNetwork)
-    #drawHistogram(randomNetwork)
-
-
-    network = generateNetwork(nodeSize = 100, edgeBudget = 1000, name = "Test Network")
-    print(nx.info(network))
-    #drawWeightedGraph(network)
-    drawHistogram(network)
->>>>>>> 31068baf793c97acb04d0bd6dd52f01cd31708c1
 
 
 def makeRandomNetwork(nodes, edges):
@@ -58,7 +45,6 @@ def makeRandomNetwork(nodes, edges):
 
     return G
 
-<<<<<<< HEAD
 def makeScaleFreeNetwork(nodes, edges):
 
     if(edges > nodes*(nodes-1)/2):
@@ -66,15 +52,15 @@ def makeScaleFreeNetwork(nodes, edges):
         return None
 
     initialNodes = 2
-    remainingNodes = nodes-initialNodes
-
+    remainingNodes = np.arange(initialNodes, nodes)
     G = nx.complete_graph(initialNodes)
 
-    for i in range(remainingNodes):
-            n1 = np.random.randint(0,remainingNodes)
-            n2Array = _selectNodes(G, int(edges/remainingNodes) )
-            for j in range(len(n2Array)):
-                G.add_edge(n1, n2Array[j])
+    for i in remainingNodes-initialNodes:
+        # n1 = np.random.randint(i,len(remainingNodes))
+        n1 = i;
+        n2Array = _selectNodes(G, int(edges/len(remainingNodes)) )
+        for j in range(len(n2Array)):
+            G.add_edge(n1, n2Array[j])
 
     return G
 
@@ -101,8 +87,6 @@ def _selectNodes(G, numConnections):
 #       edges. If weighting flag is set to True, the weight between edges will be
 #       calculated with the generateWeight() function. Otherwise, the weights will
 #       be assigned uniformly to all edges as 1.
-=======
->>>>>>> 31068baf793c97acb04d0bd6dd52f01cd31708c1
 def generateNetwork(nodeSize, edgeBudget, name = "network"):
 
     # Check if given parameters make sense
@@ -234,7 +218,7 @@ def drawGraph(G):
         return None
 
     plt.figure(1, figsize=(20,10))
-    nx.draw_networkx(G, with_labels=True, font_weight='bold')
+    nx.draw_shell(G, with_labels=True, font_weight='bold')
     plt.show()
 
 # Takes a network grahg and graphs it based on the weights of the edges in the network
