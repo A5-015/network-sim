@@ -10,17 +10,33 @@ import collections
 def main():
 
     randomNetwork = makeRandomNetwork(nodes = 500, edges = 1500)
+    #drawGraph(randomNetwork)
+    #drawHistogram(randomNetwork)
     print(nx.info(randomNetwork))
-    drawGraph(randomNetwork)
-    drawHistogram(randomNetwork)
+    print("Max degree: " + str(max(sorted([d for n, d in randomNetwork.degree()]))))
+    print("Min degree: " + str(min(sorted([d for n, d in randomNetwork.degree()]))))
+    print("Average distance: " + str(avergeDistance(randomNetwork)))
 
-
+    '''
     # network = generateNetwork(nodeSize = 100, edgeBudget = 1000, name = "Test Network")
     scaleFreeNetwork = makeScaleFreeNetwork(nodes = 500, edges = 1500)
     print(nx.info(scaleFreeNetwork))
     drawGraph(scaleFreeNetwork)
     drawHistogram(scaleFreeNetwork)
+    '''
 
+def avergeDistance(G):
+    average = 0
+    
+    for i in range(nx.number_of_nodes(G)):
+        for k in range(i):
+            try:
+                average = (nx.shortest_path_length(G, i, k) + average) / 2
+            except:
+                # just for having something in the except case
+                a = 1
+
+    return average
 
 def makeRandomNetwork(nodes, edges):
 
