@@ -1,2 +1,2 @@
 default:
-	python src/generateNetwork.py
+	python3 src/generateNetwork.py

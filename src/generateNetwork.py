@@ -9,16 +9,17 @@ import collections
 
 def main():
 
-    randomNetwork = makeRandomNetwork(100, 1000);
+    randomNetwork = makeRandomNetwork(nodes = 500, edges = 800)
     print(nx.info(randomNetwork))
-    #drawGraph(randomNetwork)
-    #drawHistogram(randomNetwork)
+    drawGraph(randomNetwork)
+    drawHistogram(randomNetwork)
 
 
-    network = generateNetwork(nodeSize = 100, edgeBudget = 1000, name = "Test Network")
-    print(nx.info(network))
-    #drawWeightedGraph(network)
-    #drawHistogram(network)
+    # network = generateNetwork(nodeSize = 100, edgeBudget = 1000, name = "Test Network")
+    scaleFreeNetwork = makeScaleFreeNetwork(nodes = 500, edges = 5000)
+    print(nx.info(scaleFreeNetwork))
+    drawGraph(scaleFreeNetwork)
+    drawHistogram(scaleFreeNetwork)
 
 
 def makeRandomNetwork(nodes, edges):
@@ -43,6 +44,42 @@ def makeRandomNetwork(nodes, edges):
     G.add_edges_from(edgeArray)
 
     return G
+
+def makeScaleFreeNetwork(nodes, edges):
+
+    if(edges > nodes*(nodes-1)/2):
+        print("Too many edges")
+        return None
+
+    initialNodes = 2
+    remainingNodes = nodes-initialNodes
+
+    G = nx.complete_graph(initialNodes)
+
+    for i in range(remainingNodes):
+            n1 = np.random.randint(0,remainingNodes)
+            n2Array = _selectNodes(G, int(edges/remainingNodes) )
+            for j in range(len(n2Array)):
+                G.add_edge(n1, n2Array[j])
+
+    return G
+
+def _selectNodes(G, numConnections):
+
+    networkNodeWeights = []
+    selectedNodes = []
+
+    for node in G.nodes():
+        nodeDegree = G.degree(node)
+        nodeProbability = nodeDegree / (2 * len(G.edges()))
+        networkNodeWeights.append(nodeProbability)
+
+    for i in range(numConnections):
+        selectedNodes.append(np.random.choice(G.nodes(),p=networkNodeWeights))
+
+    return selectedNodes
+
+
 
 
 # Takes the total number of nodes that needs to be in the graph, total number of
@@ -207,7 +244,7 @@ def drawWeightedGraph(G):
     # Draw nodes and add labes to all nodes
     labels = nx.get_node_attributes(G, 'weight')
 
-    nx.draw_networkx_nodes(G, pos, node_size = np.multiply(labels.values(), float(20000)))
+    nx.draw_networkx_nodes(G, pos, node_size = np.multiply(list(labels.values()), float(20000)))
     nx.draw_networkx_labels(G, pos, font_weight='bold')
     #nx.draw_networkx_labels(G, pos_weight, labels = labels, font_weight='bold', font_color = "b")
 
