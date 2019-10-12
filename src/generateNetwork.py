@@ -44,12 +44,6 @@ def makeRandomNetwork(nodes, edges):
 
     return G
 
-
-# Takes the total number of nodes that needs to be in the graph, total number of
-#       edges that need to be in the graph, and a boolean value for weighting the
-#       edges. If weighting flag is set to True, the weight between edges will be
-#       calculated with the generateWeight() function. Otherwise, the weights will
-#       be assigned uniformly to all edges as 1.
 def generateNetwork(nodeSize, edgeBudget, name = "network"):
 
     # Check if given parameters make sense
