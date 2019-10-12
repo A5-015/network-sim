@@ -9,6 +9,7 @@ import collections
 
 def main():
 
+<<<<<<< HEAD
     randomNetwork = makeRandomNetwork(nodes = 500, edges = 800)
     print(nx.info(randomNetwork))
     drawGraph(randomNetwork)
@@ -20,6 +21,18 @@ def main():
     print(nx.info(scaleFreeNetwork))
     drawGraph(scaleFreeNetwork)
     drawHistogram(scaleFreeNetwork)
+=======
+    #randomNetwork = makeRandomNetwork(100, 1000);
+    #print(nx.info(randomNetwork))
+    #drawGraph(randomNetwork)
+    #drawHistogram(randomNetwork)
+
+
+    network = generateNetwork(nodeSize = 100, edgeBudget = 1000, name = "Test Network")
+    print(nx.info(network))
+    #drawWeightedGraph(network)
+    drawHistogram(network)
+>>>>>>> 31068baf793c97acb04d0bd6dd52f01cd31708c1
 
 
 def makeRandomNetwork(nodes, edges):
@@ -45,6 +58,7 @@ def makeRandomNetwork(nodes, edges):
 
     return G
 
+<<<<<<< HEAD
 def makeScaleFreeNetwork(nodes, edges):
 
     if(edges > nodes*(nodes-1)/2):
@@ -87,11 +101,13 @@ def _selectNodes(G, numConnections):
 #       edges. If weighting flag is set to True, the weight between edges will be
 #       calculated with the generateWeight() function. Otherwise, the weights will
 #       be assigned uniformly to all edges as 1.
+=======
+>>>>>>> 31068baf793c97acb04d0bd6dd52f01cd31708c1
 def generateNetwork(nodeSize, edgeBudget, name = "network"):
 
     # Check if given parameters make sense
     if(edgeBudget > nodeSize*(nodeSize-1)/2):
-        print("Provided too many edges, pleas check the values")
+        print("Provided too many edges, please check the values")
         return None
 
     # Create an empty graph
@@ -140,6 +156,9 @@ def generateNetwork(nodeSize, edgeBudget, name = "network"):
         newEdgeCount = G.number_of_edges()
 
         if oldEdgeCount != newEdgeCount:
+            #####################
+            ## REWARD FUNCTION ##
+            #####################
             increaseRatio = float(mappingRatio) / float(10*(float(i+1))) # i+1 is used to prevent division by 0
 
             # Increase weights of the chosen nodes
