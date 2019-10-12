@@ -9,8 +9,8 @@ import collections
 
 def main():
 
-    randomNetwork = makeRandomNetwork(100, 1000);
-    print(nx.info(randomNetwork))
+    #randomNetwork = makeRandomNetwork(100, 1000);
+    #print(nx.info(randomNetwork))
     #drawGraph(randomNetwork)
     #drawHistogram(randomNetwork)
 
@@ -18,7 +18,7 @@ def main():
     network = generateNetwork(nodeSize = 100, edgeBudget = 1000, name = "Test Network")
     print(nx.info(network))
     #drawWeightedGraph(network)
-    #drawHistogram(network)
+    drawHistogram(network)
 
 
 def makeRandomNetwork(nodes, edges):
@@ -48,7 +48,7 @@ def generateNetwork(nodeSize, edgeBudget, name = "network"):
 
     # Check if given parameters make sense
     if(edgeBudget > nodeSize*(nodeSize-1)/2):
-        print("Provided too many edges, pleas check the values")
+        print("Provided too many edges, please check the values")
         return None
 
     # Create an empty graph
@@ -97,6 +97,9 @@ def generateNetwork(nodeSize, edgeBudget, name = "network"):
         newEdgeCount = G.number_of_edges()
 
         if oldEdgeCount != newEdgeCount:
+            #####################
+            ## REWARD FUNCTION ##
+            #####################
             increaseRatio = float(mappingRatio) / float(10*(float(i+1))) # i+1 is used to prevent division by 0
 
             # Increase weights of the chosen nodes
