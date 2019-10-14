@@ -24,11 +24,13 @@ def main():
     randomNetworkHistData = []
 
     for i in range(runs):
+        print("Simulating network #" + str(i))
         randomNetwork = makeRandomNetwork(nodes = nodes, edges = edges)
         # print(nx.info(randomNetwork))
         # print("Max degree: " + str(max(sorted([d for n, d in randomNetwork.degree()]))))
         # print("Min degree: " + str(min(sorted([d for n, d in randomNetwork.degree()]))))
         # print("Average distance: " + str(averageDistance(randomNetwork)))
+        # print('\n')
         averageDistanceData[i] = averageDistance(randomNetwork)
         averageDegreeData[i] = averageDegree(randomNetwork)
         randomNetworkHistData.append(degreeDistribution(randomNetwork))
@@ -46,11 +48,13 @@ def main():
     # scaleFreeNetworkHistData = []
     #
     # for i in range(runs):
+    #     print("Simulating network #" + str(i))
     #     scaleFreeNetwork = makeScaleFreeNetwork(nodes = 500, edges = 1600)
     #     print(nx.info(scaleFreeNetwork))
     #     print("Max degree: " + str(max(sorted([d for n, d in scaleFreeNetwork.degree()]))))
     #     print("Min degree: " + str(min(sorted([d for n, d in scaleFreeNetwork.degree()]))))
     #     print("Average distance: " + str(averageDistance(scaleFreeNetwork)))
+    #     print('\n')
     #     averageDistanceData[i] = averageDistance(scaleFreeNetwork)
     #     scaleFreeNetworkHistData.append(degreeDistribution(scaleFreeNetwork))
     #
