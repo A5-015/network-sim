@@ -7,27 +7,36 @@ import matplotlib.pyplot as plt
 import numpy as np
 import collections
 import seaborn as sns
-from scipy.stats import beta
+from scipy.stats import powerlaw
 
 def main():
 
-    randomNetwork = makeRandomNetwork(nodes = 500, edges = 1500)
-    #drawGraph(randomNetwork)
-    #drawHistogram(randomNetwork)
-    print(nx.info(randomNetwork))
-    print("Max degree: " + str(max(sorted([d for n, d in randomNetwork.degree()]))))
-    print("Min degree: " + str(min(sorted([d for n, d in randomNetwork.degree()]))))
-    # print("Average distance: " + str(avergeDistance(randomNetwork)))
-    x = degreeDistribution(randomNetwork)
+    runs = 5
+    randomNetworkHistData = []
 
-    randomNetwork = makeRandomNetwork(nodes = 500, edges = 1500)
-    print(nx.info(randomNetwork))
-    print("Max degree: " + str(max(sorted([d for n, d in randomNetwork.degree()]))))
-    print("Min degree: " + str(min(sorted([d for n, d in randomNetwork.degree()]))))
-    # print("Average distance: " + str(avergeDistance(randomNetwork)))
-    y = degreeDistribution(randomNetwork)
+    # for i in range(runs):
+    #     randomNetwork = makeRandomNetwork(nodes = 500, edges = 1500)
+    #     #drawGraph(randomNetwork)
+    #     #drawHistogram(randomNetwork)
+    #     print(nx.info(randomNetwork))
+    #     print("Max degree: " + str(max(sorted([d for n, d in randomNetwork.degree()]))))
+    #     print("Min degree: " + str(min(sorted([d for n, d in randomNetwork.degree()]))))
+    #     # print("Average distance: " + str(averageDistance(randomNetwork)))
+    #     randomNetworkHistData.append(degreeDistribution(randomNetwork))
+    #
+    # overlayHistogram(randomNetworkHistData)
 
-    overlayHistogram(x,y)
+    scaleFreeNetworkHistData = []
+
+    for i in range(runs):
+        scaleFreeNetwork = makeScaleFreeNetwork(nodes = 500, edges = 1600)
+        print(nx.info(scaleFreeNetwork))
+        print("Max degree: " + str(max(sorted([d for n, d in scaleFreeNetwork.degree()]))))
+        print("Min degree: " + str(min(sorted([d for n, d in scaleFreeNetwork.degree()]))))
+        # print("Average distance: " + str(averageDistance(scaleFreeNetwork)))
+        scaleFreeNetworkHistData.append(degreeDistribution(scaleFreeNetwork))
+
+    overlayHistogram(scaleFreeNetworkHistData)
 
 
     '''
@@ -38,7 +47,7 @@ def main():
     drawHistogram(scaleFreeNetwork)
     '''
 
-def avergeDistance(G):
+def averageDistance(G):
     average = 0
 
     for i in range(nx.number_of_nodes(G)):
@@ -52,11 +61,13 @@ def avergeDistance(G):
     return average
 
 def degreeDistribution(G):
-    a = sorted([d for n, d in G.degree()])
-
+    a = np.array(sorted([d for n, d in G.degree()]))
+    mini = np.array(min(sorted([d for n, d in G.degree()])))
+    a = np.subtract(a, mini)
+    # for fixing the offset
     return a
 
-def overlayHistogram(x,y):
+def overlayHistogram(data):
     # bins = np.linspace(0, 15, 10)
     #
     # plt.hist(x, bins, alpha=0.5, label='x', stacked=True, histtype='barstacked')
@@ -66,8 +77,18 @@ def overlayHistogram(x,y):
 
     fig, ax = plt.subplots()
 
-    sns.countplot(x, ax=ax)
-    sns.countplot(y, ax=ax)
+    # print(data)
+
+    xmax = np.amax(data)
+    # ymax = np.argmax(np.bincount(data))
+    ymax = 0.4
+    ax.set_xlim(left=0, right=xmax)
+    ax.set_ylim(top=ymax)
+
+
+    for i in range(len(data)):
+        sns.distplot(data[i], fit=powerlaw, ax=ax, kde=False)
+
     plt.show()
 
 def makeRandomNetwork(nodes, edges):
@@ -99,7 +120,7 @@ def makeScaleFreeNetwork(nodes, edges):
         print("Too many edges")
         return None
 
-    initialNodes = 2
+    initialNodes = 10
     remainingNodes = np.arange(initialNodes, nodes)
     G = nx.complete_graph(initialNodes)
 
@@ -161,39 +182,6 @@ def drawGraph(G):
 
     plt.figure(1, figsize=(20,10))
     nx.draw_shell(G, with_labels=True, font_weight='bold')
-    plt.show()
-
-# Takes a network grahg and graphs it based on the weights of the edges in the network
-def drawWeightedGraph(G):
-    if(G == None):
-        return None
-
-    # Positions for all nodes
-    # Check the following link for options
-    #       https://networkx.github.io/documentation/networkx-1.10/reference/drawing.html#module-networkx.drawing.layout
-    pos = nx.random_layout(G)
-
-    pos_weight = {}
-    for k, v in pos.items():
-        pos_weight[k] = (v[0], v[1] + 0.05)
-
-    # Create a figure
-    plt.figure(1, figsize=(20,10))
-    #plt.margins(50, 50)
-
-    # Iterate through all edges and plot them depending on their weights
-    for (u, v, d) in G.edges(data = True):
-        edge = [(u, v)]
-        nx.draw_networkx_edges(G, pos, edgelist = edge, width = d['weight']*2)
-
-    # Draw nodes and add labes to all nodes
-    labels = nx.get_node_attributes(G, 'weight')
-
-    nx.draw_networkx_nodes(G, pos, node_size = np.multiply(list(labels.values()), float(20000)))
-    nx.draw_networkx_labels(G, pos, font_weight='bold')
-    #nx.draw_networkx_labels(G, pos_weight, labels = labels, font_weight='bold', font_color = "b")
-
-    #plt.axis('off')
     plt.show()
 
 

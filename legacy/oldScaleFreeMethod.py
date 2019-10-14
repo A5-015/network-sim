@@ -101,3 +101,37 @@ def generateNetwork(nodeSize, edgeBudget, name = "network"):
             '''
 
     return G
+
+
+# Takes a network grahg and graphs it based on the weights of the edges in the network
+def drawWeightedGraph(G):
+    if(G == None):
+        return None
+
+    # Positions for all nodes
+    # Check the following link for options
+    #       https://networkx.github.io/documentation/networkx-1.10/reference/drawing.html#module-networkx.drawing.layout
+    pos = nx.random_layout(G)
+
+    pos_weight = {}
+    for k, v in pos.items():
+        pos_weight[k] = (v[0], v[1] + 0.05)
+
+    # Create a figure
+    plt.figure(1, figsize=(20,10))
+    #plt.margins(50, 50)
+
+    # Iterate through all edges and plot them depending on their weights
+    for (u, v, d) in G.edges(data = True):
+        edge = [(u, v)]
+        nx.draw_networkx_edges(G, pos, edgelist = edge, width = d['weight']*2)
+
+    # Draw nodes and add labes to all nodes
+    labels = nx.get_node_attributes(G, 'weight')
+
+    nx.draw_networkx_nodes(G, pos, node_size = np.multiply(list(labels.values()), float(20000)))
+    nx.draw_networkx_labels(G, pos, font_weight='bold')
+    #nx.draw_networkx_labels(G, pos_weight, labels = labels, font_weight='bold', font_color = "b")
+
+    #plt.axis('off')
+    plt.show()
