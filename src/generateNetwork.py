@@ -8,6 +8,7 @@ import numpy as np
 import collections
 import seaborn as sns
 from scipy.stats import powerlaw
+from scipy.stats import poisson
 
 def main():
 
@@ -24,7 +25,7 @@ def main():
     #     # print("Average distance: " + str(averageDistance(randomNetwork)))
     #     randomNetworkHistData.append(degreeDistribution(randomNetwork))
     #
-    # overlayHistogram(randomNetworkHistData)
+    # overlayHistogram(randomNetworkHistData, type="random")
 
     scaleFreeNetworkHistData = []
 
@@ -36,7 +37,7 @@ def main():
         # print("Average distance: " + str(averageDistance(scaleFreeNetwork)))
         scaleFreeNetworkHistData.append(degreeDistribution(scaleFreeNetwork))
 
-    overlayHistogram(scaleFreeNetworkHistData)
+    overlayHistogram(scaleFreeNetworkHistData, type="scalefree")
 
 
     '''
@@ -67,29 +68,41 @@ def degreeDistribution(G):
     # for fixing the offset
     return a
 
-def overlayHistogram(data):
-    # bins = np.linspace(0, 15, 10)
-    #
-    # plt.hist(x, bins, alpha=0.5, label='x', stacked=True, histtype='barstacked')
-    # plt.hist(y, bins, alpha=0.5, label='y', stacked=True, histtype='barstacked')
-    # plt.legend(loc='upper right')
-    # plt.show()
-
+def overlayHistogram(data, type):
     fig, ax = plt.subplots()
 
     # print(data)
 
     xmax = np.amax(data)
     # ymax = np.argmax(np.bincount(data))
-    ymax = 0.4
     ax.set_xlim(left=0, right=xmax)
-    ax.set_ylim(top=ymax)
+    # ax.set_ylim(top=ymax)
+
+    axis_font = {'fontname':'Arial', 'size':'15'}
+    title_font = {'fontname': 'Arial', 'size':'20'}
+    ax.tick_params(labelsize=12)
 
 
-    for i in range(len(data)):
-        sns.distplot(data[i], fit=powerlaw, ax=ax, kde=False)
+    if (type == "random"):
+        for i in range(len(data)):
+            mlest = data[i].mean()
+            sns.distplot(data[i], ax=ax, kde=False)
+            plt.plot(data[i], poisson.pmf(data[i], mlest)*len(data[i]), 'ko', markersize=4)
 
-    plt.show()
+        ax.set_xlabel('Degree', **axis_font)
+        ax.set_ylabel('Frequency', **axis_font)
+        ax.set_title("Degree Distribution of a Random Network Modeled by a Poisson Distribution", **title_font)
+        plt.show()
+    else:
+        for i in range(len(data)):
+            sns.distplot(data[i], ax=ax, kde=False, fit=powerlaw)
+        ax.set_xlabel('Degree', **axis_font)
+        ax.set_ylabel('Frequency', **axis_font)
+        ax.set_title("Degree Distribution of a Scale-Free Network Modeled by a Power Law Distribution", **title_font)
+        plt.show()
+
+
+
 
 def makeRandomNetwork(nodes, edges):
 
