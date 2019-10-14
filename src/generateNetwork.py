@@ -67,7 +67,7 @@ def main():
     #
     # np.savetxt('scaleFreeNetworkAvgDistance.txt', averageDistanceData)
     # np.savetxt('scaleFreeNetworkAvgDegree.txt', averageDegreeData)
-    # np.savetxt('scaleFreeNetworkHistData.txt', randomNetworkHistData)
+    # np.savetxt('scaleFreeNetworkHistData.txt', scaleFreeNetworkHistData)
 
 def plotAvgDistance(data):
 
