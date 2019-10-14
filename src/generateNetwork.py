@@ -12,21 +12,37 @@ from scipy.stats import poisson
 
 def main():
 
-    runs = 5
+    runs = 100
+
+    nodes = 1000
+    edges = nodes*2
+
+    averageDistanceData = np.zeros(runs)
+    averageDegreeData = np.zeros(runs)
+
+    ################################################################
     randomNetworkHistData = []
 
     for i in range(runs):
-        randomNetwork = makeRandomNetwork(nodes = 500, edges = 1500)
-        #drawGraph(randomNetwork)
-        #drawHistogram(randomNetwork)
-        print(nx.info(randomNetwork))
-        print("Max degree: " + str(max(sorted([d for n, d in randomNetwork.degree()]))))
-        print("Min degree: " + str(min(sorted([d for n, d in randomNetwork.degree()]))))
+        randomNetwork = makeRandomNetwork(nodes = nodes, edges = edges)
+        # print(nx.info(randomNetwork))
+        # print("Max degree: " + str(max(sorted([d for n, d in randomNetwork.degree()]))))
+        # print("Min degree: " + str(min(sorted([d for n, d in randomNetwork.degree()]))))
         # print("Average distance: " + str(averageDistance(randomNetwork)))
+        averageDistanceData[i] = averageDistance(randomNetwork)
+        averageDegreeData[i] = averageDegree(randomNetwork)
         randomNetworkHistData.append(degreeDistribution(randomNetwork))
 
-    overlayHistogram(randomNetworkHistData, type="random")
+    ## PLOTTING
+    # overlayHistogram(randomNetworkHistData, type="random")
+    plotAvgDistance(averageDistanceData)
+    plotServiceTime(averageDegreeData)
 
+    np.savetxt('randomNetworkAvgDistance.txt', averageDistanceData)
+    np.savetxt('randomNetworkAvgDegree.txt', averageDegreeData)
+    np.savetxt('randomNetworkHistData.txt', randomNetworkHistData)
+
+    ################################################################
     # scaleFreeNetworkHistData = []
     #
     # for i in range(runs):
@@ -34,21 +50,61 @@ def main():
     #     print(nx.info(scaleFreeNetwork))
     #     print("Max degree: " + str(max(sorted([d for n, d in scaleFreeNetwork.degree()]))))
     #     print("Min degree: " + str(min(sorted([d for n, d in scaleFreeNetwork.degree()]))))
-    #     # print("Average distance: " + str(averageDistance(scaleFreeNetwork)))
+    #     print("Average distance: " + str(averageDistance(scaleFreeNetwork)))
+    #     averageDistanceData[i] = averageDistance(scaleFreeNetwork)
     #     scaleFreeNetworkHistData.append(degreeDistribution(scaleFreeNetwork))
     #
     # overlayHistogram(scaleFreeNetworkHistData, type="scalefree")
 
+    ## PLOTTING
+    # overlayHistogram(randomNetworkHistData, type="random")
+    # plotAvgDistance(averageDistanceData)
+    # plotServiceTime(averageDegreeData)
+    #
+    # np.savetxt('scaleFreeNetworkAvgDistance.txt', averageDistanceData)
+    # np.savetxt('scaleFreeNetworkAvgDegree.txt', averageDegreeData)
+    # np.savetxt('scaleFreeNetworkHistData.txt', randomNetworkHistData)
 
-    '''
-    # network = generateNetwork(nodeSize = 100, edgeBudget = 1000, name = "Test Network")
-    scaleFreeNetwork = makeScaleFreeNetwork(nodes = 500, edges = 1500)
-    print(nx.info(scaleFreeNetwork))
-    drawGraph(scaleFreeNetwork)
-    drawHistogram(scaleFreeNetwork)
-    '''
+def plotAvgDistance(data):
+
+    fig, ax = plt.subplots()
+    sns.distplot(data, ax=ax, kde=False, bins=None)
+
+    axis_font = {'size':'15'}
+    title_font = {'size':'20'}
+    ax.tick_params(labelsize=12)
+
+    ax.set_xlabel('Average Distance', **axis_font)
+    ax.set_ylabel('Frequency', **axis_font)
+    ax.set_title("Average Distance", **title_font)
+
+    plt.show()
+
+def plotServiceTime(data):
+
+    fig, ax = plt.subplots()
+    data = np.exp(-data)
+    sns.distplot(data, ax=ax, kde=False, bins=None)
+
+    axis_font = {'size':'15'}
+    title_font = {'size':'20'}
+    ax.tick_params(labelsize=12)
+
+    ax.set_xlabel('Inverse Degree', **axis_font)
+    ax.set_ylabel('Frequency', **axis_font)
+    ax.set_title("Service Time", **title_font)
+
+    plt.show()
+
+
+def averageDegree(G):
+    s = sum([v for k, v in G.degree()])
+    res = (float(s)/float(G.number_of_nodes()))
+
+    return res
 
 def averageDistance(G):
+
     average = 0
 
     for i in range(nx.number_of_nodes(G)):
@@ -160,42 +216,6 @@ def _selectNodes(G, numConnections):
         selectedNodes.append(np.random.choice(G.nodes(),p=networkNodeWeights))
 
     return selectedNodes
-
-def drawHistogram(G):
-    degree_sequence = sorted([d for n, d in G.degree()], reverse=True)  # degree sequence
-    # print "Degree sequence", degree_sequence
-    degreeCount = collections.Counter(degree_sequence)
-    deg, cnt = zip(*degreeCount.items())
-
-    fig, ax = plt.subplots()
-    plt.bar(deg, cnt, width=0.80, color='b')
-
-    plt.title("Degree Histogram")
-    plt.ylabel("Count")
-    plt.xlabel("Degree")
-    ax.set_xticks([d + 0.4 for d in deg])
-    ax.set_xticklabels(deg)
-
-    # # draw graph in inset
-    # plt.axes([0.4, 0.4, 0.5, 0.5])
-    # Gcc = sorted(nx.connected_component_subgraphs(G), key=len, reverse=True)[0]
-    # pos = nx.spring_layout(G)
-    # plt.axis('off')
-    # nx.draw_networkx_nodes(G, pos, node_size=20)
-    # nx.draw_networkx_edges(G, pos, alpha=0.4)
-
-    #ax.set_xlim([10,50])
-
-    plt.show()
-
-
-def drawGraph(G):
-    if(G == None):
-        return None
-
-    plt.figure(1, figsize=(20,10))
-    nx.draw_shell(G, with_labels=True, font_weight='bold')
-    plt.show()
 
 
 if __name__ == '__main__':
