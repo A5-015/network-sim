@@ -15,29 +15,29 @@ def main():
     runs = 5
     randomNetworkHistData = []
 
-    # for i in range(runs):
-    #     randomNetwork = makeRandomNetwork(nodes = 500, edges = 1500)
-    #     #drawGraph(randomNetwork)
-    #     #drawHistogram(randomNetwork)
-    #     print(nx.info(randomNetwork))
-    #     print("Max degree: " + str(max(sorted([d for n, d in randomNetwork.degree()]))))
-    #     print("Min degree: " + str(min(sorted([d for n, d in randomNetwork.degree()]))))
-    #     # print("Average distance: " + str(averageDistance(randomNetwork)))
-    #     randomNetworkHistData.append(degreeDistribution(randomNetwork))
-    #
-    # overlayHistogram(randomNetworkHistData, type="random")
-
-    scaleFreeNetworkHistData = []
-
     for i in range(runs):
-        scaleFreeNetwork = makeScaleFreeNetwork(nodes = 500, edges = 1600)
-        print(nx.info(scaleFreeNetwork))
-        print("Max degree: " + str(max(sorted([d for n, d in scaleFreeNetwork.degree()]))))
-        print("Min degree: " + str(min(sorted([d for n, d in scaleFreeNetwork.degree()]))))
-        # print("Average distance: " + str(averageDistance(scaleFreeNetwork)))
-        scaleFreeNetworkHistData.append(degreeDistribution(scaleFreeNetwork))
+        randomNetwork = makeRandomNetwork(nodes = 500, edges = 1500)
+        #drawGraph(randomNetwork)
+        #drawHistogram(randomNetwork)
+        print(nx.info(randomNetwork))
+        print("Max degree: " + str(max(sorted([d for n, d in randomNetwork.degree()]))))
+        print("Min degree: " + str(min(sorted([d for n, d in randomNetwork.degree()]))))
+        # print("Average distance: " + str(averageDistance(randomNetwork)))
+        randomNetworkHistData.append(degreeDistribution(randomNetwork))
 
-    overlayHistogram(scaleFreeNetworkHistData, type="scalefree")
+    overlayHistogram(randomNetworkHistData, type="random")
+
+    # scaleFreeNetworkHistData = []
+    #
+    # for i in range(runs):
+    #     scaleFreeNetwork = makeScaleFreeNetwork(nodes = 500, edges = 1600)
+    #     print(nx.info(scaleFreeNetwork))
+    #     print("Max degree: " + str(max(sorted([d for n, d in scaleFreeNetwork.degree()]))))
+    #     print("Min degree: " + str(min(sorted([d for n, d in scaleFreeNetwork.degree()]))))
+    #     # print("Average distance: " + str(averageDistance(scaleFreeNetwork)))
+    #     scaleFreeNetworkHistData.append(degreeDistribution(scaleFreeNetwork))
+    #
+    # overlayHistogram(scaleFreeNetworkHistData, type="scalefree")
 
 
     '''
