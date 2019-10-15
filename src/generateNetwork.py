@@ -27,16 +27,16 @@ def main():
     for i in range(runs):
         print("Simulating network #" + str(i))
         randomNetwork = makeRandomNetwork(nodes = nodes, edges = edges)
-        # print(nx.info(randomNetwork))
-        # print("Max degree: " + str(max(sorted([d for n, d in randomNetwork.degree()]))))
-        # print("Min degree: " + str(min(sorted([d for n, d in randomNetwork.degree()]))))
-        # print("Average distance: " + str(averageDistance(randomNetwork)))
-        # print('\n')
+        print(nx.info(randomNetwork))
+        print("Max degree: " + str(max(sorted([d for n, d in randomNetwork.degree()]))))
+        print("Min degree: " + str(min(sorted([d for n, d in randomNetwork.degree()]))))
+        print("Average distance: " + str(averageDistance(randomNetwork)))
+        print('\n')
         averageDistanceData[i] = averageDistance(randomNetwork)
         averageDegreeData[i] = averageDegree(randomNetwork)
         randomNetworkHistData.append(degreeDistribution(randomNetwork))
 
-    ## PLOTTING
+    # PLOTTING
     overlayHistogram(randomNetworkHistData, type="random")
     plotAvgDistance(averageDistanceData)
     plotServiceTime(averageDegreeData)
@@ -47,6 +47,8 @@ def main():
     '''
 
     ################################################################
+    ################################################################
+
     scaleFreeNetworkHistData = []
 
     for i in range(runs):
@@ -72,6 +74,7 @@ def main():
     np.savetxt('scaleFreeNetworkAvgDegree.txt', averageDegreeData)
     np.savetxt('scaleFreeNetworkHistData.txt', scaleFreeNetworkHistData)
 
+
 def plotAvgDistance(data):
 
     fig, ax = plt.subplots()
@@ -86,6 +89,7 @@ def plotAvgDistance(data):
     ax.set_title("Average Distance", **title_font)
 
     plt.show()
+
 
 def plotServiceTime(data):
 
@@ -110,6 +114,7 @@ def averageDegree(G):
 
     return res
 
+
 def averageDistance(G):
 
     average = 0
@@ -124,12 +129,14 @@ def averageDistance(G):
 
     return average
 
+
 def degreeDistribution(G):
     a = np.array(sorted([d for n, d in G.degree()]))
     mini = np.array(min(sorted([d for n, d in G.degree()])))
     a = np.subtract(a, mini)
     # for fixing the offset
     return a
+
 
 def overlayHistogram(data, type):
     fig, ax = plt.subplots()
@@ -165,8 +172,6 @@ def overlayHistogram(data, type):
         plt.show()
 
 
-
-
 def makeRandomNetwork(nodes, edges):
 
     if(edges > nodes*(nodes-1)/2):
@@ -190,6 +195,7 @@ def makeRandomNetwork(nodes, edges):
 
     return G
 
+
 def makeScaleFreeNetwork(nodes, edges):
 
     if(edges > nodes*(nodes-1)/2):
@@ -208,6 +214,7 @@ def makeScaleFreeNetwork(nodes, edges):
             G.add_edge(n1, n2Array[j])
 
     return G
+
 
 def _selectNodes(G, numConnections):
 
