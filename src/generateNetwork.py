@@ -12,37 +12,39 @@ from scipy.stats import poisson
 
 def main():
 
-    runs = 100
+    runs = 8
 
-    nodes = 1000
+    nodes = 5000
     edges = nodes*2
 
     averageDistanceData = np.zeros(runs)
     averageDegreeData = np.zeros(runs)
 
     ################################################################
-    # randomNetworkHistData = []
-    #
-    # for i in range(runs):
-    #     print("Simulating network #" + str(i))
-    #     randomNetwork = makeRandomNetwork(nodes = nodes, edges = edges)
-    #     # print(nx.info(randomNetwork))
-    #     # print("Max degree: " + str(max(sorted([d for n, d in randomNetwork.degree()]))))
-    #     # print("Min degree: " + str(min(sorted([d for n, d in randomNetwork.degree()]))))
-    #     # print("Average distance: " + str(averageDistance(randomNetwork)))
-    #     # print('\n')
-    #     averageDistanceData[i] = averageDistance(randomNetwork)
-    #     averageDegreeData[i] = averageDegree(randomNetwork)
-    #     randomNetworkHistData.append(degreeDistribution(randomNetwork))
-    #
-    # ## PLOTTING
-    # # overlayHistogram(randomNetworkHistData, type="random")
-    # plotAvgDistance(averageDistanceData)
-    # plotServiceTime(averageDegreeData)
-    #
-    # np.savetxt('randomNetworkAvgDistance.txt', averageDistanceData)
-    # np.savetxt('randomNetworkAvgDegree.txt', averageDegreeData)
-    # np.savetxt('randomNetworkHistData.txt', randomNetworkHistData)
+    '''
+    randomNetworkHistData = []
+
+    for i in range(runs):
+        print("Simulating network #" + str(i))
+        randomNetwork = makeRandomNetwork(nodes = nodes, edges = edges)
+        # print(nx.info(randomNetwork))
+        # print("Max degree: " + str(max(sorted([d for n, d in randomNetwork.degree()]))))
+        # print("Min degree: " + str(min(sorted([d for n, d in randomNetwork.degree()]))))
+        # print("Average distance: " + str(averageDistance(randomNetwork)))
+        # print('\n')
+        averageDistanceData[i] = averageDistance(randomNetwork)
+        averageDegreeData[i] = averageDegree(randomNetwork)
+        randomNetworkHistData.append(degreeDistribution(randomNetwork))
+
+    ## PLOTTING
+    overlayHistogram(randomNetworkHistData, type="random")
+    plotAvgDistance(averageDistanceData)
+    plotServiceTime(averageDegreeData)
+
+    np.savetxt('randomNetworkAvgDistance.txt', averageDistanceData)
+    np.savetxt('randomNetworkAvgDegree.txt', averageDegreeData)
+    np.savetxt('randomNetworkHistData.txt', randomNetworkHistData)
+    '''
 
     ################################################################
     scaleFreeNetworkHistData = []
@@ -56,14 +58,15 @@ def main():
         print("Average distance: " + str(averageDistance(scaleFreeNetwork)))
         print('\n')
         averageDistanceData[i] = averageDistance(scaleFreeNetwork)
+        averageDegreeData[i] = averageDegree(scaleFreeNetwork)
         scaleFreeNetworkHistData.append(degreeDistribution(scaleFreeNetwork))
 
-    overlayHistogram(scaleFreeNetworkHistData, type="scalefree")
-
+    '''
     # PLOTTING
-    overlayHistogram(randomNetworkHistData, type="random")
+    overlayHistogram(scaleFreeNetworkHistData, type="scalefree")
     plotAvgDistance(averageDistanceData)
     plotServiceTime(averageDegreeData)
+    '''
 
     np.savetxt('scaleFreeNetworkAvgDistance.txt', averageDistanceData)
     np.savetxt('scaleFreeNetworkAvgDegree.txt', averageDegreeData)
