@@ -49,7 +49,7 @@ def main():
 
     for i in range(runs):
         print("Simulating network #" + str(i))
-        scaleFreeNetwork = makeScaleFreeNetwork(nodes = 500, edges = 1600)
+        scaleFreeNetwork = makeScaleFreeNetwork(nodes = nodes, edges = edges)
         print(nx.info(scaleFreeNetwork))
         print("Max degree: " + str(max(sorted([d for n, d in scaleFreeNetwork.degree()]))))
         print("Min degree: " + str(min(sorted([d for n, d in scaleFreeNetwork.degree()]))))
