@@ -12,9 +12,9 @@ from scipy.stats import poisson
 
 def main():
 
-    runs = 1
+    runs = 5
 
-    nodes = 5000
+    nodes = 1000
     edges = nodes*2
 
     averageDistanceData = np.zeros(runs)
@@ -47,7 +47,10 @@ def main():
     # np.savetxt('randomNetworkAvgDistance.txt', averageDistanceData)
     np.savetxt('randomNetworkAvgDegree.txt', averageDegreeData)
     np.savetxt('randomNetworkHistData.txt', randomNetworkHistData)
+<<<<<<< HEAD
 
+=======
+>>>>>>> bb50ea7a07349fb80f1a87daaca17212ef87998e
 
     ################################################################
     ################################################################
@@ -166,15 +169,18 @@ def overlayHistogram(data, type):
 
         ax.set_xlabel('Degree', **axis_font)
         ax.set_ylabel('Frequency', **axis_font)
-        ax.set_title("Degree Distribution of a Random Network Modeled by a Poisson Distribution", **title_font)
-        plt.show()
+        ax.set_title("Degree Distribution of a Random Network \n Modeled by a Poisson Distribution", **title_font)
+
     else:
         for i in range(len(data)):
             sns.distplot(data[i], ax=ax, kde=False, fit=powerlaw)
         ax.set_xlabel('Degree', **axis_font)
         ax.set_ylabel('Frequency', **axis_font)
-        ax.set_title("Degree Distribution of a Scale-Free Network Modeled by a Power Law Distribution", **title_font)
-        plt.show()
+        ax.set_title("Degree Distribution of a Scale-Free Network \n Modeled by a Power Law Distribution", **title_font)
+
+    #ax.legend()
+    #plt.legend(labels=['a', 'b', 'c'])
+    plt.show()
 
 
 def makeRandomNetwork(nodes, edges):
