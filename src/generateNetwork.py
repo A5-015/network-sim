@@ -12,7 +12,7 @@ from scipy.stats import poisson
 
 def main():
 
-    runs = 8
+    runs = 1
 
     nodes = 5000
     edges = nodes*2
@@ -57,9 +57,9 @@ def main():
         print(nx.info(scaleFreeNetwork))
         print("Max degree: " + str(max(sorted([d for n, d in scaleFreeNetwork.degree()]))))
         print("Min degree: " + str(min(sorted([d for n, d in scaleFreeNetwork.degree()]))))
-        print("Average distance: " + str(averageDistance(scaleFreeNetwork)))
+        # print("Average distance: " + str(averageDistance(scaleFreeNetwork)))
         print('\n')
-        averageDistanceData[i] = averageDistance(scaleFreeNetwork)
+        # averageDistanceData[i] = averageDistance(scaleFreeNetwork)
         averageDegreeData[i] = averageDegree(scaleFreeNetwork)
         scaleFreeNetworkHistData.append(degreeDistribution(scaleFreeNetwork))
 
@@ -70,7 +70,7 @@ def main():
     plotServiceTime(averageDegreeData)
     '''
 
-    np.savetxt('scaleFreeNetworkAvgDistance.txt', averageDistanceData)
+    # np.savetxt('scaleFreeNetworkAvgDistance.txt', averageDistanceData)
     np.savetxt('scaleFreeNetworkAvgDegree.txt', averageDegreeData)
     np.savetxt('scaleFreeNetworkHistData.txt', scaleFreeNetworkHistData)
 
