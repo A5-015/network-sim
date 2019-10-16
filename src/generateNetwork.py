@@ -23,7 +23,6 @@ def main():
     ################################################################
     ################################################################
 
-    '''
     randomNetworkHistData = []
 
     for i in range(runs):
@@ -32,25 +31,27 @@ def main():
         print(nx.info(randomNetwork))
         print("Max degree: " + str(max(sorted([d for n, d in randomNetwork.degree()]))))
         print("Min degree: " + str(min(sorted([d for n, d in randomNetwork.degree()]))))
-        print("Average distance: " + str(averageDistance(randomNetwork)))
+        # print("Average distance: " + str(averageDistance(randomNetwork)))
         print('\n')
-        averageDistanceData[i] = averageDistance(randomNetwork)
+        # averageDistanceData[i] = averageDistance(randomNetwork)
         averageDegreeData[i] = averageDegree(randomNetwork)
         randomNetworkHistData.append(degreeDistribution(randomNetwork))
 
+    '''
     # PLOTTING
     overlayHistogram(randomNetworkHistData, type="random")
     plotAvgDistance(averageDistanceData)
     plotServiceTime(averageDegreeData)
-
-    np.savetxt('randomNetworkAvgDistance.txt', averageDistanceData)
-    np.savetxt('randomNetworkAvgDegree.txt', averageDegreeData)
-    np.savetxt('randomNetworkHistData.txt', randomNetworkHistData)
     '''
 
-    ################################################################
-    ################################################################
+    # np.savetxt('randomNetworkAvgDistance.txt', averageDistanceData)
+    np.savetxt('randomNetworkAvgDegree.txt', averageDegreeData)
+    np.savetxt('randomNetworkHistData.txt', randomNetworkHistData)
 
+
+    ################################################################
+    ################################################################
+    '''
     scaleFreeNetworkHistData = []
 
     for i in range(runs):
@@ -65,17 +66,17 @@ def main():
         averageDegreeData[i] = averageDegree(scaleFreeNetwork)
         scaleFreeNetworkHistData.append(degreeDistribution(scaleFreeNetwork))
 
-    '''
+
     # PLOTTING
     overlayHistogram(scaleFreeNetworkHistData, type="scalefree")
     plotAvgDistance(averageDistanceData)
     plotServiceTime(averageDegreeData)
-    '''
+
 
     # np.savetxt('scaleFreeNetworkAvgDistance.txt', averageDistanceData)
     np.savetxt('scaleFreeNetworkAvgDegree.txt', averageDegreeData)
     np.savetxt('scaleFreeNetworkHistData.txt', scaleFreeNetworkHistData)
-
+    '''
     ################################################################
     ################################################################
 
