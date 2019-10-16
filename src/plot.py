@@ -4,22 +4,29 @@ import numpy as np
 import collections
 import seaborn as sns
 
+def plot(data_path, xlabel, ylabel, title, column):
+    fig, ax = plt.subplots()
+
+    axis_font = {'size':'15'}
+    title_font = {'size':'20'}
+    ax.tick_params(labelsize=12)
+
+    ax.set_xlabel(xlabel, **axis_font)
+    ax.set_ylabel(ylabel, **axis_font)
+    ax.set_title(title, **title_font)
+
+    data = np.loadtxt(data_path, delimiter=',', skiprows=1)
+
+    sns.distplot(data[:,column], ax=ax, kde=False, bins=None)
+
+    plt.show()
+
 data_path = '../averagesFiftyRuns.csv'
 
-fig, ax = plt.subplots()
+plot(data_path = data_path, xlabel = 'Average Degree', ylabel = 'Frequency', title = "Average Degree in a Scale-Free Network \n with 5000 Nodes and 2n Edges", column = 2)
 
-axis_font = {'size':'15'}
-title_font = {'size':'20'}
-ax.tick_params(labelsize=12)
+plot(data_path = data_path, xlabel = 'Average Degree', ylabel = 'Frequency', title = "Average Degree in a Random Network \n with 5000 Nodes and 2n Edges", column = 6)
 
-ax.set_xlabel('Average Degree', **axis_font)
-ax.set_ylabel('Frequency', **axis_font)
-ax.set_title("Average Degree in a Scale-Free Network with 5000 Nodes and 2n Edges", **title_font)
+plot(data_path = data_path, xlabel = 'Average Distance', ylabel = 'Frequency', title = "Average Distance in a Scale-Free Network \n with 5000 Nodes and 2n Edges", column = 5)
 
-data = np.loadtxt(data_path, delimiter=',', skiprows=1)
-
-sns.distplot(data[:,2], ax=ax, kde=False, bins=None)
-
-mng = plt.get_current_fig_manager()
-mng.window.showMaximized()
-plt.show()
+plot(data_path = data_path, xlabel = 'Average Distance', ylabel = 'Frequency', title = "Average Distance in a Random Network \n with 5000 Nodes and 2n Edges", column = 7)
