@@ -21,6 +21,8 @@ def main():
     averageDegreeData = np.zeros(runs)
 
     ################################################################
+    ################################################################
+
     '''
     randomNetworkHistData = []
 
@@ -74,6 +76,8 @@ def main():
     np.savetxt('scaleFreeNetworkAvgDegree.txt', averageDegreeData)
     np.savetxt('scaleFreeNetworkHistData.txt', scaleFreeNetworkHistData)
 
+    ################################################################
+    ################################################################
 
 def plotAvgDistance(data):
 
