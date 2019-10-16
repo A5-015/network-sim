@@ -47,10 +47,6 @@ def main():
     # np.savetxt('randomNetworkAvgDistance.txt', averageDistanceData)
     np.savetxt('randomNetworkAvgDegree.txt', averageDegreeData)
     np.savetxt('randomNetworkHistData.txt', randomNetworkHistData)
-<<<<<<< HEAD
-
-=======
->>>>>>> bb50ea7a07349fb80f1a87daaca17212ef87998e
 
     ################################################################
     ################################################################
