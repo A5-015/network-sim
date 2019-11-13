@@ -1,10 +1,11 @@
 import matplotlib.pyplot as plt
 import csv
+import powerlaw
 import numpy as np
 import collections
 import seaborn as sns
 from scipy import stats
-from scipy.stats import powerlaw
+# from scipy.stats import powerlaw
 
 
 def plot(data_path, xlabel, ylabel, title, column):
@@ -45,12 +46,17 @@ def calculateDistributionStatistics(data_path, type = "other"):
         print("Var degree: " + str(var))
 
         if (type == "sf" or type == "scalefree"):
-            print("mode:" + str(stats.mode(df)))
-            df = np.subtract(df, 1)
-            gamma = powerlaw.fit(df)
-            print("Gamma: " + str(gamma))
-            sns.distplot(df, kde=False, fit=powerlaw)
-            plt.show()
+            mode = stats.mode(df)[0][0]
+            mod_df = np.subtract(df, mode)
+            mod_df = np.delete(mod_df, np.where(mod_df == -1))
+            results = powerlaw.Fit(mod_df)
+            print("alpha: " + str(results.power_law.alpha))
+            print("xmin: " + str(results.power_law.xmin))
+            R, p = results.distribution_compare('power_law', 'exponential')
+            print(R)
+            print(p)
+            # sns.distplot(mod_df, kde=False, fit=powerlaw)
+            # plt.show()
 
 
 
@@ -61,5 +67,6 @@ def calculateDistributionStatistics(data_path, type = "other"):
 # plot(data_path = data_path, xlabel = 'Average Distance', ylabel = 'Frequency', title = "Average Distance in a Random Network \n with 5000 Nodes and 2n Edges", column = 7)
 
 
-data_path = '../averagesFiftyRuns.csv'
-calculateDistributionStatistics(data_path = data_path)
+# data_path = '../averagesFiftyRuns.csv'
+data_path = '../data/scaleFreeNetworkHistData.txt'
+calculateDistributionStatistics(data_path = data_path, type = "sf")
